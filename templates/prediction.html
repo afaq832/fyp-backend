@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prediction Form</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+      }
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        z-index: 1000;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: background-color 0.3s;
+      }
+
+      .navbar a:hover,
+      .navbar a.active {
+        background-color: #0056b3;
+      }
+      .navbar-nav {
+        display: flex;
+        flex-direction: row;
+      }
+      .card {
+        margin-top: 20px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      }
+      #predictionResult .alert {
+    background-color: #28a745; /* Bootstrap success color */
+    color: white; /* Ensuring text is white for contrast */
+    border-radius: 0.375rem; /* Slightly rounded corners for a modern look */
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.2); /* Soft shadow for 3D effect */
+}
+
+#predictionResult .alert strong {
+    font-size: 1.5rem; /* Making the 'Result:' text larger */
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#predictionResult .alert {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+    </style>
+  </head>
+
+  <body>
+    <div class="container mt-5">
+      <div id="predictionResult" class="mt-4" style="display: none">
+        <!-- Content will be dynamically inserted here -->
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card" data-aos="fade-up">
+            <div class="card-header text-center">Cricket Run Prediction</div>
+            <div class="card-body">
+              <form id="predictionForm">
+                <div class="form-group">
+                  <label for="playerSelect">Player Name:</label>
+                  <select
+                    id="playerSelect"
+                    name="player"
+                    class="form-control"
+                    required
+                  >
+                    <option value="">Select a player</option>
+                    {% for player in players %}
+                    <option value="{{ player }}">{{ player }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <div class="form-group">
+                    <label for="teamSelect">Opposition Name:</label>
+                    <select
+                      id="teamSelect"
+                      name="team"
+                      class="form-control"
+                      required
+                    >
+                      <option value="">Select a team</option>
+                      {% for team in teams %}
+                      <option value="{{ team }}">{{ team }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="balls_faced">Balls Faced:</label>
+                  <input
+                    type="number"
+                    id="balls_faced"
+                    name="balls_faced"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="overs">Overs:</label>
+                  <input
+                    type="number"
+                    id="overs"
+                    name="overs"
+                    class="form-control"
+                    required
+                    
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  Predict Runs
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div
+      class="modal fade"
+      id="predictionModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="predictionModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="predictionModalLabel">
+              Prediction Result
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="predictionContent">
+            <!-- Prediction results will be displayed here -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#playerSelect").select2({
+          placeholder: "Select a player",
+          allowClear: true,
+        });
+
+        // Initialize Select2 for the new team select
+        $("#teamSelect").select2({
+          placeholder: "Select a team",
+          allowClear: true,
+        });
+      });
+
+      document
+        .getElementById("predictionForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent the default form submission
+
+          const player = document.getElementById("playerSelect").value;
+          const opposition = document.getElementById("teamSelect").value;
+          const ballsFaced = document.getElementById("balls_faced").value;
+          const overs = document.getElementById("overs").value;
+
+          // Construct the data to send in the request
+          const data = {
+            Player: player,
+            Opposition: opposition,
+            BF: ballsFaced,
+            Overs: overs,
+          };
+
+          // Make a POST request to the Flask server
+          fetch("/predict", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Display the prediction result using Bootstrap's alert for aesthetics
+              const predictionResult =
+                document.getElementById("predictionResult");
+              predictionResult.innerHTML = `
+    <div class="alert alert-success p-4 mb-4 rounded-lg" role="alert" style="font-size: 1.25rem;">
+        <strong>Result:</strong> ${data.message}
+    </div>`;
+              predictionResult.style.display = "block"; // Make sure the result is visible
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // Optionally handle errors by displaying them in a similar styled alert
+              const predictionResult =
+                document.getElementById("predictionResult");
+              predictionResult.innerHTML = `<div class="alert alert-danger" role="alert">Error: Could not retrieve prediction.</div>`;
+              predictionResult.style.display = "block";
+            });
+        });
+
+
+        function preventNegativeInput(inputElement) {
+          inputElement.addEventListener('input', function() {
+            if (this.value < 0) {
+              this.value = ''; // Clear the input if negative value is entered
+            }
+          });
+        }
+      
+        // Get the input elements by their IDs and apply the validation
+        document.addEventListener('DOMContentLoaded', function() {
+          const ballsFacedInput = document.getElementById('balls_faced');
+          const oversInput = document.getElementById('overs');
+      
+          preventNegativeInput(ballsFacedInput);
+          preventNegativeInput(oversInput);
+        });
+    </script>
+    <script>
+      AOS.init();
+    </script>
+  </body>
+</html>

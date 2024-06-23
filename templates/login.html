@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #32c69a; /* Teal background */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            width: 350px;
+            text-align: center;
+        }
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #ffffff;
+
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 30px;
+            color:black
+        }
+        .icon-container {
+            background-color: #ffffff;
+            border-radius: 50%;
+            padding: 10px;
+            margin-right: -45px;
+            z-index: 3;
+            position: relative;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .form-control {
+            border-radius: 30px;
+            padding-left: 50px;
+            height: 50px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-primary {
+            background-color: #32c69a;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 30px;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-size: 18px;
+        }
+        .btn-primary:hover {
+            background-color: #28a892;
+        }
+        .forgot-password {
+            text-align: center;
+            display: block;
+            margin-top: 20px;
+            color: #32c69a;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2> LOGIN</h2>
+        <form action="/login" method="POST">
+            <div class="input-group">
+                <span class="icon-container"><i class="fas fa-user"></i></span>
+                <input name="username" type="text" class="form-control" placeholder="Username">
+            </div>
+            <div class="input-group">
+                <span class="icon-container"><i class="fas fa-lock"></i></span>
+                <input name="password" type="password" class="form-control" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <a href="/signup" class="forgot-password">Register</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Data Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+    <style>
+        body {
+            background-color: #435050; /* Soft background color */
+            color: #333; /* Universal text color for better readability */
+        }
+        .card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: none; /* Remove default border */
+            border-radius: 10px; /* Rounded corners for a modern look */
+        }
+        .card:hover {
+            transform: translateY(-5px); /* Slight lift */
+            box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.25); /* Soft shadow */
+        }
+        .card-body i {
+            color: #1a936f; /* Cricket green color for icons */
+        }
+        .card-title {
+            color: #114b5f; /* Deep blue color for titles */
+        }
+        .btn-primary {
+            background-color: #114b5f; /* Match button color with card title */
+            border: none; /* Remove default border */
+        }
+        .btn-primary:hover {
+            background-color: #0c3953; /* Darker shade on hover */
+        }
+        h1 {
+            color: white; /* Heading color to match the theme */
+        }
+        .card_section{
+            margin-top: 13rem !important;
+       
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container mt-5 card_section">
+        <h1 class="mb-4 text-center">Welcome to the Cricket Data Dashboard</h1>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line fa-3x"></i> <!-- Prediction icon -->
+                        <h5 class="card-title mt-3">Match Predictions</h5>
+                        <a href="prediction" class="btn btn-primary mt-2">View</a>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <i class="fas fa-user-friends fa-3x"></i> <!-- Players icon -->
+                        <h5 class="card-title mt-3">Players Stats</h5>
+                        <a href="players_table" class="btn btn-primary mt-2">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <i class="fas fa-tv fa-3x"></i> <!-- Live matches icon -->
+                        <h5 class="card-title mt-3">Live Matches</h5>
+                        <a href="currentMatches" class="btn btn-primary mt-2">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
